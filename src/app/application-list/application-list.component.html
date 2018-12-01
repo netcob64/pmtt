@@ -1,0 +1,19 @@
+<mat-nav-list dense>
+  <mat-list-item *ngFor="let asset of guiCtrl.GetItApplications()" (click)="Edit(asset, $event)">
+    <button mat-button (click)="stopEventPropagation($event)" [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <span>{{asset.GetName()}}</span>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="submenu">New...</button>
+      <button mat-menu-item (click)="Delete(asset, $event)">Delete</button>
+      <button mat-menu-item (click)="Edit(asset, $event)">Edit</button>
+    </mat-menu>
+    <mat-menu #submenu="matMenu">
+      <button mat-menu-item (click)="AddApplicationMap(asset, $event)">Map</button>
+      <button mat-menu-item (click)="AddSubApplication(asset, $event)">assetlication</button>
+      <button mat-menu-item>Other</button>
+    </mat-menu>
+  </mat-list-item>
+</mat-nav-list>
+

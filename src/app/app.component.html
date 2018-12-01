@@ -1,0 +1,8 @@
+<gui-ctrl #guiCtrl [app]="me"></gui-ctrl>
+<ng-container *ngIf="logged; else elseBlock">
+  <app-header [guiCtrl]="guiCtrl"></app-header>
+  <app-middle [guiCtrl]="guiCtrl"></app-middle>
+</ng-container>
+<ng-template #elseBlock>
+  <app-login-form [guiCtrl]="guiCtrl"></app-login-form>
+</ng-template>

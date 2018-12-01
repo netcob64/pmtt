@@ -1,0 +1,28 @@
+.appForm {
+  padding-right: 16px;
+  padding-left: 16px;
+  color: #eee;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+table {
+	width:100%;
+}
+td {
+	/*border: 1px solid #fff;*/
+	padding-left: 10px;
+	padding-right:  0px;
+	padding-top: 0px;
+	padding-bottom:  0px;
+	vertical-align: top;
+	width: 50%;
+}
+
+.formTab mat-form-field {
+ width: 100%;
+}
+
+.cmdButtons > button {
+  margin: 5px;
+}
