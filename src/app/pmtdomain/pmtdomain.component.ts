@@ -1,50 +1,46 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ItAssetStatus } from '../core/models/it-asset';
-import { ItApplication, ItApplicationType } from '../core/models/it-application';
+import { Component, Input, OnInit} from '@angular/core';
+import { GuiCtrlComponent } from '../gui-ctrl-component';
+import { PmtDomain } from '../core/models/pmt-domain';
 import { DataService } from '../core/services/data.service';
 import { DataServiceDataType } from '../core/services/data.service.data.type';
-import { GuiCtrlComponent } from '../gui-ctrl-component';
 import { inspect } from 'util';
 
 @Component({
-  selector: 'app-application-form',
-  templateUrl: './application-form.component.html',
-  styleUrls: ['./application-form.component.css']
+  selector: 'app-pmtdomain',
+  templateUrl: './pmtdomain.component.html',
+  styleUrls: ['./pmtdomain.component.css']
 })
-
-export class ApplicationFormComponent {
+export class PmtdomainComponent implements OnInit {
   @Input() guiCtrl: GuiCtrlComponent;
-  @Input() application: ItApplication;
- 
-
-  ItApplicationTypeEnum=ItApplicationType;
-  ItAssetStatusEnum=ItAssetStatus;
+  @Input() object: PmtDomain;
 
   error : boolean = false;
   errorMessage : string = null;
-  prev: ItApplication;
- 
+  prevValue: PmtDomain;
 
   constructor(private dataService: DataService) { 
-    this.dataService.SetDataType(DataServiceDataType.APPLICATION);
-    this.prev=new ItApplication();
+    this.dataService.SetDataType(DataServiceDataType.PMT_DOMAIN);
+    this.prevValue=new PmtDomain();
   }
-
   ngOnInit() {
-    this.prev.clone(this.application);
+    this.prevValue.clone(this.object);
   }
 
-  CheckToBeSaved() : boolean {
-     if (this.NotEqual(this.application , this.prev) || this.application.GetId() == null) {
+   CheckToBeSaved() : boolean {
+     if (this.NotEqual(this.object , this.prevValue) || this.object.GetVersion() == 0) {
+      //this.application.SetModified(true);
+      //this.prev.SetModified(true);
       return true; 
     } else {
+      //this.application.SetModified(false);
+      //this.prev.SetModified(false);
       return false; 
     }
   }
 
   Save(): void {
     if (this.CheckToBeSaved()) {
-    this.dataService.Save(this.application).subscribe(data => this.SaveDataHandler(data));
+    this.dataService.Save(this.object).subscribe(data => this.SaveDataHandler(data));
     }
   }
 
@@ -61,10 +57,9 @@ export class ApplicationFormComponent {
     } else {      
       console.log(data, 'ApplicationFormComponent::SaveApplicationDataHandler(): version='+data.version+(data.version>0?' UPDATED' : ' CREATED'));
       this.error = false;
-      this.application.SetVersion(data.version);
-      //this.guiCtrl.ApplicationSaved(this.application, newObj); 
-      this.guiCtrl.ItAssetSaved(this.application  , this.prev);    
-      this.prev.clone(this.application);
+      this.object.SetVersion(data.version);
+      this.guiCtrl.PmtAssetSaved(this.object, this.prevValue);    
+      this.prevValue.clone(this.object);
     }
   }
 

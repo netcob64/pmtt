@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ItAsset } from '../models/it-asset';
+import { PmtAsset } from '../models/pmt-asset';
 import { GuiCtrlComponent } from '../../gui-ctrl-component';
 import { DataServiceDataType } from './data.service.data.type';
 
@@ -49,9 +49,9 @@ export class DataService {
      //}
   }
 
-  Get(): Observable<ItAsset[]> {
+  Get(): Observable<PmtAsset[]> {
     const url = `${this.getUrl}/class=${this.objectClass}`;
-    return this.http.get<ItAsset[]>(url)
+    return this.http.get<PmtAsset[]>(url)
       .pipe(
       tap(data => {
 
@@ -59,30 +59,30 @@ export class DataService {
         // guiCtrl.AddMessage('data => '+JSON.stringify(data));
 
       }),
-      catchError(this.handleError<ItAsset[]>('Get', []))
+      catchError(this.handleError<PmtAsset[]>('Get', []))
       );
   }
   /** POST: add or update a new data to the server 
   }*/
-  Save(obj: ItAsset): Observable<ItAsset> {
+  Save(obj: PmtAsset): Observable<PmtAsset> {
     const url = `${this.saveUrl}/class=${this.objectClass}`;
-    return this.http.post<ItAsset>(url, obj, httpOptions)
+    return this.http.post<PmtAsset>(url, obj, httpOptions)
       .pipe(
       tap(_ => this.log(`added object class=${this.objectClass} id=${obj.GetId()}`)),
       tap(_ => console.log("DataService::Save : object version: ", obj.GetVersion())),
-      catchError(this.handleError<ItAsset>('Save'))
+      catchError(this.handleError<PmtAsset>('Save'))
       );
   }
 
-  Delete(obj: ItAsset): Observable<ItAsset> {
+  Delete(obj: PmtAsset): Observable<PmtAsset> {
     const id = obj.GetId();
     const version = obj.GetVersion();
     const url = `${this.deleteUrl}/class=${this.objectClass}&id=${id}&version=${version}`;
 
-    return this.http.delete<ItAsset>(url, httpOptions)
+    return this.http.delete<PmtAsset>(url, httpOptions)
       .pipe(
       tap(_ => this.log(`deleted object id=${id} version=${version}`)),
-      catchError(this.handleError<ItAsset>('Delete'))
+      catchError(this.handleError<PmtAsset>('Delete'))
       );
   }
 

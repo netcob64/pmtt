@@ -12,16 +12,13 @@ export type PmtAssetID = any;
 export class PmtAsset {
   protected className: string;
   protected id: PmtAssetID;
-  protected pmtVersion: PmtVersion;
   protected name: string;
   protected description: string;
   protected label: string;
   protected type: string;
   protected status: PmtAssetStatus;
   protected version: number;
-  protected validityStart: string;
-  protected validityEnd: string;
-  protected children: PmtAsset[];
+
 
   constructor(id? : PmtAssetID) {
     this.className = this.constructor.name;
@@ -65,11 +62,6 @@ export class PmtAsset {
     return this.constructor.name;
   }
 
-  /** for instance application module */
-  public AddChildren(asset: PmtAsset): void {
-    if (this.children == undefined) this.children = [];
-    this.children.concat(asset);
-  }
 
   public GetName(): string {
     return this.name;

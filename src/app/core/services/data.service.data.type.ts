@@ -1,5 +1,4 @@
 export enum  DataServiceDataType {
-  APPLICATION="application",
-  MAP="map",
-  META_MODEL="meta-model"
+  PMT_VERSION="pmt-version",
+  PMT_DOMAIN="pmt-domain",
 }

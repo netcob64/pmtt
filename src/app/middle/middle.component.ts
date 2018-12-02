@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, OnInit, Input } from '@angular/core';
 import { GuiCtrlComponent } from '../gui-ctrl-component';
-import { ItApplication } from '../core/models/it-application';
+import { PmtVersion } from '../core/models/pmt-version';
 import { MatTreeModule } from '@angular/material/tree';
 
 @Component({
@@ -14,16 +14,16 @@ export class MiddleComponent {
   @Input() panelOpenState: boolean = true;
 
   constructor() { }
-
+/*
   AddNewApplication(event: Event): void {
     event.stopPropagation(); // if not the accordilion close
-    this.guiCtrl.AddNewApplication();
+    this.guiCtrl.AddNewPmtVersion();
   }
   
   AddNewMetamodel(event: Event): void {
     event.stopPropagation(); // if not the accordilion close
     this.guiCtrl.AddNewMetamodel();
-  }
+  }*/
 
   OnClose(): void { }
 }

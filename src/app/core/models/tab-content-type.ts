@@ -1,9 +1,6 @@
 export enum TabContentType  {
     
-    META_MODEL="META MODEL",
-    TXT="TEXTE",
-    APP="APPLICATION",
-    MAP="DIAGRAM",
-    SITE="SITE",
-    ORG="ORGANISATION & USER"
+    PMT_VERSION="PMT VERSION",
+    PMT_DOMAIN="PMT DOMAIN",
+    TXT="TEXTE"
 }

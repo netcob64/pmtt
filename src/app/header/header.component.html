@@ -2,8 +2,9 @@
   <img src="../assets/android-icon-36x36.png">
   <span style="width:150px;">&nbsp;{{guiCtrl.GetApplicationTitle()}}</span>
  
- 
-  <button mat-button (click)="guiCtrl.SidenavShowHide()" i18n="display menu">{{guiCtrl.GetSideNavLabel()}}</button>
+
+ <mat-slide-toggle (click)="guiCtrl.SidenavShowHide()" checked>Sidenav</mat-slide-toggle>
+
   <button mat-button [matMenuTriggerFor]="menuAdmin">Admin</button>
  <mat-menu #menuAdmin="matMenu" yPosition="below" [overlapTrigger]="false">
     <button mat-menu-item (click)="guiCtrl.AddNewMetamodel()" i18n="meta model menu">Meta Modele</button>

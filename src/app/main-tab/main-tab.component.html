@@ -8,10 +8,9 @@
       </button>
     </ng-template>
     <div class="tab-content">
-      <div style="padding:16px;" *ngIf="tab.type == TabContentType.TXT" [innerHTML]="tab.content.html|keepHtml"></div>
-      <app-application-form *ngIf="tab.type == TabContentType.APP" [application]="tab.content" [guiCtrl]="guiCtrl"></app-application-form>
-      <app-metamodel-form *ngIf="tab.type == TabContentType.META_MODEL" [model]="tab.content" [guiCtrl]="guiCtrl"></app-metamodel-form>
-      <app-map-form *ngIf="tab.type == TabContentType.MAP" [map]="tab.content" [guiCtrl]="guiCtrl"></app-map-form>
+      <div style="padding:16px;" *ngIf="tab.type == TabContentType.TXT" [innerHTML]="tab.content.html|keepHtml"></div>    
+      <app-pmtversion *ngIf="tab.type == TabContentType.PMT_VERSION" [object]="tab.content" [guiCtrl]="guiCtrl"></app-pmtversion>
+      <app-pmtdomain *ngIf="tab.type == TabContentType.PMT_DOMAIN" [object]="tab.content" [guiCtrl]="guiCtrl"></app-pmtdomain>
     </div>
   </mat-tab>
 </mat-tab-group>

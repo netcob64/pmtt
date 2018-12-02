@@ -42,11 +42,11 @@
             }],
             "styles": [
               "src/styles.css"
-            ],
+            ]/*,
             "scripts": [
               "src/assets/js/mxgraph.conf.js",
               "node_modules/mxgraph/javascript/mxClient.js"
-            ]
+            ]*/
           },
           "configurations":
           {

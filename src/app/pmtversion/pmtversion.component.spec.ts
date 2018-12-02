@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapFormComponent } from './map-form.component';
+import { PmtversionComponent } from './pmtversion.component';
 
-describe('MapFormComponent', () => {
-  let component: MapFormComponent;
-  let fixture: ComponentFixture<MapFormComponent>;
+describe('PmtversionComponent', () => {
+  let component: PmtversionComponent;
+  let fixture: ComponentFixture<PmtversionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MapFormComponent ]
+      declarations: [ PmtversionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MapFormComponent);
+    fixture = TestBed.createComponent(PmtversionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

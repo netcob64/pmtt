@@ -1,25 +1,28 @@
 import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { AppComponent } from './app.component';
-import { ItAsset } from './core/models/it-asset';
-import { ItApplication } from './core/models/it-application';
-import { ItMap } from './core/models/it-map';
-import { ItMessage } from './core/models/it-message';
 import { TabContentType } from './core/models/tab-content-type';
-import { ItMetamodel } from './core/models/it-metamodel';
 import { DataService } from './core/services/data.service';
 import { DataServiceDataType } from './core/services/data.service.data.type';
-import { GraphObjectFactory } from './core/mxgraph/mx.graph';
 import { inspect } from 'util';
+import { PmtAsset } from './core/models/pmt-asset';
+import { PmtVersion } from './core/models/pmt-version';
+import { PmtDomain } from './core/models/pmt-domain';
 
 class TabContent {
   type: TabContentType;
-  content: ItAsset | any;
-  constructor(type: TabContentType, content: ItAsset | any) {
+  content: PmtAsset | any;
+  constructor(type: TabContentType, content: PmtAsset | any) {
     this.type = type;
     this.content = content;
   }
   getLabel(): string {
-    if (this.content instanceof ItApplication) {
+    if (this.content.GetName instanceof Object) {
+    return this.content.GetName();
+  } else {
+    return this.content.name;
+  }
+    /*
+    if (this.content instanceof PmtVersion) {
     return 'app: ' + this.content.GetName();
     } else if (this.content instanceof ItMetamodel) {
     return 'class: ' + this.content.GetName();
@@ -27,37 +30,36 @@ class TabContent {
     return 'map[' + this.content.GetType() + ']: ' + this.content.GetName() + ' (' + this.content.getAsset().GetName() + ')';
     } else {
       return this.content.name;
-    }
+    }*/
   }
 }
 
 @Component({ selector: 'gui-ctrl', template: `` })
-export class GuiCtrlComponent implements GraphObjectFactory {
+export class GuiCtrlComponent {
   me: GuiCtrlComponent = this;
   @Input() app: AppComponent;
-  objectClassIndex: Map < string,  Map < string,  ItAsset >> ;
-  //metamodels: ItMetamodel[];
-  //applications: ItApplication[];
-  //maps: ItMap[];
-  metamodels(): Map < string,  ItAsset > { return this.objectClassIndex.get(this.IT_METAMODEL_CLASS_NAME); }
-  test: boolean = true;
+  objectClassIndex: Map < string,  Map < string,  PmtAsset >> ;
 
-  /* TODO: initialize from Database */
-  public IT_METAMODEL_CLASS_NAME: string = (new ItMetamodel()).GetClassName();
-  public IT_APPLICATION_CLASS_NAME: string = (new ItApplication()).GetClassName();
-  public IT_MAP_CLASS_NAME: string = (new ItMap()).GetClassName();
-  public IT_MESSAGE_CLASS_NAME: string = (new ItMessage()).GetClassName();
+  public PMT_VERSION_CLASS_NAME: string = (new PmtVersion()).GetClassName();
+  public PMT_DOMAIN_CLASS_NAME: string = (new PmtDomain()).GetClassName();
+  
+
+  pmtVersion(): Map < string,  PmtAsset > { return this.objectClassIndex.get(this.PMT_VERSION_CLASS_NAME); }
+  pmtDomain(): Map < string,  PmtAsset > { return this.objectClassIndex.get(this.PMT_DOMAIN_CLASS_NAME); }
+ 
+   private tabContentTypeForClass = {
+    "PmtVersion": TabContentType.PMT_VERSION,
+    "PmtDomain": TabContentType.PMT_DOMAIN,
+    /*"ItMetamodel": TabContentType.META_MODEL,
+    "ItMap": TabContentType.MAP,*/
+  }
 
   constructor(private dataService: DataService) {
     this.objectClassIndex = new Map();
-    //this.metamodels = [];    
-    //this.applications = [];
-    //this.maps = [];
-    this.objectClassIndex.set(this.IT_APPLICATION_CLASS_NAME, new Map());
-    this.objectClassIndex.set(this.IT_METAMODEL_CLASS_NAME, new Map());
-    this.objectClassIndex.set(this.IT_MAP_CLASS_NAME, new Map());
-    this.objectClassIndex.set(this.IT_MESSAGE_CLASS_NAME, new Map());
 
+    this.objectClassIndex.set(this.PMT_VERSION_CLASS_NAME, new Map());
+    this.objectClassIndex.set(this.PMT_DOMAIN_CLASS_NAME, new Map());
+   
     dataService.guiCtrl = this;
 
     this.AddTabContent(TabContentType.TXT, {
@@ -66,69 +68,48 @@ export class GuiCtrlComponent implements GraphObjectFactory {
       <h3>TODO</h3>
       <h2>
         <ul>        
-          <li>Passer ItApplication en generique comme Metamodel dans guiCtrl, applicaiton-list etc..</li>
-          <li>permet de factoriser le code de guiCtrl..</li>
-          <li>Finir la genericite mxgraph : GraphObject etc pour avoir des label et les editer sur tout type d'objet...</li>
-        
-          <li>supprimer une tab quand l'objet est detruit par app-list ou metamodel-list...</li>
+          <li>todo 1</li>
         </ul>
       </h2>
       <ul>     
-      <li>
-      voir https://medium.com/@mail.bahurudeen/create-a-dynamic-form-with-configurable-fields-and-validations-using-angular-6-994db56834da
-      pour la gestion de form dynamiques ou http://jasonwatmore.com/post/2018/05/10/angular-6-reactive-forms-validation-example</li>   
-        <li><b>Map:</b> chargement depuis BDD</li>
-        <li><b>Map:</b>Parametrage de la visu des graph en fonction de la date</li>
-        <li><b>Map:</b>Bug affichage mxGrpah quand Zoom Chrome actif....</li>
-        <li><b>Map:</b>Bouton Zoom</li>
-        <li><b>Map:</b>Print, Print setup, Preview</li>
-        <li><b>Map:</b>add ANALitics funtion -> graph of dependencies...</li>
-        <li>if an asset edition tab already exist don't create a new one...</li>
-        <li>Gestion de l'objet meta model...: <b>revoir l'IHM de gestion des attr system</b></li>
-        <li>Angular Material Tree component pour list des app?</li>        
-        <li>Gestion des versions des objets et acces concurrents</li>
-        <li>Gestion "not saved" pour app, graph, metamodel...
-        <li>Authentification</li>
+      <li>todo 2</li>
       </ul>
     </div>`
     });
-    //this.ShowError('coucou');
   }
 
+ //-------------------------
+  // PmtAsset management
+  //-------------------------
+
   GetLabelFor(className: string, id: number): string {
-    let assets: Array<ItAsset> = [...this.objectClassIndex.get(className).values()];
-    let asset : ItAsset = assets.find(asset => asset.GetId() == id);
+    let assets: Array<PmtAsset> = [...this.objectClassIndex.get(className).values()];
+    let asset : PmtAsset = assets.find(asset => asset.GetId() == id);
     return asset.GetName();
   } 
 
-  GetAssetFromID(className: string, id: number) : ItAsset {
-    let assets: Array<ItAsset> = [...this.objectClassIndex.get(className).values()];
+  GetAssetFromID(className: string, id: number) : PmtAsset {
+    let assets: Array<PmtAsset> = [...this.objectClassIndex.get(className).values()];
     return assets.find(asset => asset.GetId() == id);
   }
   /**
   *
   */
-  GetAssetByName(className: string, name: string): ItAsset {
+  GetAssetByName(className: string, name: string): PmtAsset {
     return this.objectClassIndex.get(className).get(name);
   }
 
-  GetItAssetNameIndex(className: string) : Map<string, ItAsset> {
+  GetPmtAssetNameIndex(className: string) : Map<string, PmtAsset> {
     return this.objectClassIndex.get(className);
   }  
-
+/*
   GetItMetamodels() {
-    return this.GetItAssets(this.IT_METAMODEL_CLASS_NAME);
+    return this.GetPmtAssets(this.IT_METAMODEL_CLASS_NAME);
   }
+*/
+  
 
-  GetItApplications() {
-    return this.GetItAssets(this.IT_APPLICATION_CLASS_NAME);
-  }
-
-  GetItMaps() {
-    return this.GetItAssets(this.IT_MAP_CLASS_NAME);
-  }
-
-  GetItAssets(className: string) : Array<ItAsset> {
+  GetPmtAssets(className: string) : Array<PmtAsset> {
     if (this.objectClassIndex.has(className)){
       return Array.from(this.objectClassIndex.get(className).values());
     } else {
@@ -140,28 +121,18 @@ export class GuiCtrlComponent implements GraphObjectFactory {
       return this.app.title;
     }
 
-  //-------------------------
-  // Meta model management
-  //-------------------------
+  
 
-  AddNewMetamodel() {
-    this.AddItAssetTab('NEW_METAMODEL', ItMetamodel);
-  }
 
-  private tabContentTypeForClass = {
-    "ItApplication": TabContentType.APP,
-    "ItMetamodel": TabContentType.META_MODEL,
-    "ItMap": TabContentType.MAP,
-  }
 
   /**
-  * Add a Tab for an ItAsset edition
-  * obj: string | ItAsset,   string for creation of a new ItAsset defined by its class (param: objClass)
-  *                          or an instance of ItAsset
+  * Add a Tab for an PmtAsset edition
+  * obj: string | PmtAsset,   string for creation of a new PmtAsset defined by its class (param: objClass)
+  *                          or an instance of PmtAsset
   * objClass ? : any         class of the object to be created
   */
-  private AddItAssetTab(obj: string | ItAsset, objClass ? : any): void {
-    var object: ItAsset;
+  private AddPmtAssetTab(obj: string | PmtAsset, objClass ? : any): void {
+    var object: PmtAsset;
 
     if (typeof obj == 'string') {
       object = new objClass();
@@ -173,14 +144,14 @@ export class GuiCtrlComponent implements GraphObjectFactory {
     this.AddTabContent(this.tabContentTypeForClass[object.GetClassName()], object);
   }
 
-  EditItAsset(asset: ItAsset) {
+  EditPmtAsset(asset: PmtAsset) {
     //console.log('EditMetamodel() - ', inspect(asset));
-    this.AddItAssetTab(asset);
+    this.AddPmtAssetTab(asset);
   }
 
-  ItAssetSaved(newAsset: ItAsset, oldAsset: ItAsset) {
-    //console.log('ItAssetSaved => asset ',inspect(asset));
-    console.log('ItAssetSaved => asset ', newAsset.GetName(), oldAsset.GetName());
+  PmtAssetSaved(newAsset: PmtAsset, oldAsset: PmtAsset) {
+    //console.log('PmtAssetSaved => asset ',inspect(asset));
+    console.log('PmtAssetSaved => asset ', newAsset.GetName(), oldAsset.GetName());
     if (this.objectClassIndex.get(newAsset.GetClassName()).has(oldAsset.GetName())) {
       this.objectClassIndex.get(newAsset.GetClassName()).delete(oldAsset.GetName());
     }
@@ -188,18 +159,16 @@ export class GuiCtrlComponent implements GraphObjectFactory {
   }
 
   private dataServiceTypeForClass = {
-    "ItApplication": DataServiceDataType.APPLICATION,
-    "ItMetamodel": DataServiceDataType.META_MODEL,
-    "ItMap": DataServiceDataType.MAP,
+    "PmtVersion": DataServiceDataType.PMT_VERSION,
   }
 
-  DeleteItAsset(asset: ItAsset) {
+  DeletePmtAsset(asset: PmtAsset) {
     console.log("Delete model id=" + asset.GetId() + ", name=" + asset.GetName());
     this.dataService.SetDataType(this.dataServiceTypeForClass[asset.GetClassName()]);
-    this.dataService.Delete(asset).subscribe(data => this.DeleteItAssetDataHandler(data, asset));
+    this.dataService.Delete(asset).subscribe(data => this.DeletePmtAssetDataHandler(data, asset));
   }
 
-  DeleteItAssetDataHandler(data: any, asset: ItAsset): void {
+  DeletePmtAssetDataHandler(data: any, asset: PmtAsset): void {
     if (data != undefined && data.status == 'success') {
       //this.metamodels = this.metamodels.filter(a => a.id !== data.id);
       this.objectClassIndex.get(asset.GetClassName()).delete(asset.GetName());
@@ -212,42 +181,24 @@ export class GuiCtrlComponent implements GraphObjectFactory {
     }
   }
 
-  LoadItAssets(assetClass: any) : void {
+  LoadPmtAssets(assetClass: any) : void {
     this.dataService.SetDataType(this.dataServiceTypeForClass[(new assetClass()).GetClassName()]);
-    this.dataService.Get().subscribe(data => this.LoadItAssetsDataHandler(data, assetClass));
+    this.dataService.Get().subscribe(data => this.LoadPmtAssetsDataHandler(data, assetClass));
   }
   
-  LoadItAssetsDataHandler(data: any, assetClass: any): void {
-    var asset:ItAsset= new assetClass();
-    this.ShowMessage('LoadItAssetsDataHandler(): asset class = ' + asset.GetClassName()+ ' - data : ' + inspect(data));
+  LoadPmtAssetsDataHandler(data: any, assetClass: any): void {
+    var asset:PmtAsset= new assetClass();
+    this.ShowMessage('LoadPmtAssetsDataHandler(): asset class = ' + asset.GetClassName()+ ' - data : ' + inspect(data));
     if (data['data'] != undefined) {
       data['data'].forEach(jsonData => this.objectClassIndex.get(asset.GetClassName()).set(jsonData.name, (new assetClass()).SetFromJson(jsonData)));
-      console.log('LoadItAssetsDataHandler() - '+asset.GetClassName()+'(s) loaded!');
+      console.log('LoadPmtAssetsDataHandler() - '+asset.GetClassName()+'(s) loaded!');
     } else {
       this.ShowError('Error: DB issue, trying to get metamodels');
     }
   }
 
-  //-------------------------
-  // ItMap management
-  //-------------------------
-  RegisterMessage(message: ItAsset) : void {
-    let messages : Array<ItAsset> = [...this.objectClassIndex.get(this.IT_MESSAGE_CLASS_NAME).values()];
-    let existingMessage = messages.find(msg => message.IsEqual(msg));
-    if (existingMessage==undefined) {
-      this.objectClassIndex.get(this.IT_MESSAGE_CLASS_NAME).set(message.GetName(), message);
-    }
-  }
-  //-------------------------
-  // ItApplication management
-  //-------------------------
-  AddNewApplication() {
-    this.AddItAssetTab('NEW_APP', ItApplication);
-  }
 
-  AddNewApplicationMap(application: ItApplication) {
-    this.AddMapTab(application, 'MAP_NEW');
-  }
+
   //-------------------------
   // Tabs management
   //-------------------------
@@ -255,36 +206,9 @@ export class GuiCtrlComponent implements GraphObjectFactory {
   activeTab: TabContent;
   activeTabIndex: number = 0;
 
-/*
-  private AddApplicationTab(appref: string | ItApplication): void {
-    var app: ItApplication;
-
-    if (typeof appref == 'string') {
-      app = new ItApplication();
-      app.SetName(appref);
-    } else {
-      app = appref;
-    }
-
-    this.AddTabContent(TabContentType.APP, app);
-  }
-*/
-  private AddMapTab(app: ItApplication, mapref: string | ItMap): void {
-    var map: ItMap;
-
-    if (typeof mapref == 'string') {
-      map = new ItMap(app);
-      map.SetName(mapref);
-    } else {
-      map = mapref;
-    }
-
-    this.AddTabContent(TabContentType.MAP, map);
-  }
-
-  private AddTabContent(tabType: TabContentType, asset:ItAsset|Object): void {
+  private AddTabContent(tabType: TabContentType, asset:PmtAsset|Object): void {
     let tab : TabContent;
-    let assName : string = (asset instanceof ItAsset? asset.GetName() :"");
+    let assName : string = (asset instanceof PmtAsset? asset.GetName() :"");
 
     // search if asset is already open in a tab
     let index = this.tabs.findIndex(elt => {
@@ -297,7 +221,7 @@ export class GuiCtrlComponent implements GraphObjectFactory {
       this.activeTab = tab;
       this.activeTabIndex = this.tabs.length;
       this.tabs = this.tabs.concat(tab);
-      if (asset instanceof ItAsset) {
+      if (asset instanceof PmtAsset) {
         // add asset in asset list
         this.objectClassIndex.get(asset.GetClassName()).set(asset.GetName(), asset);
       }
@@ -307,8 +231,8 @@ export class GuiCtrlComponent implements GraphObjectFactory {
     }
   }
 
-  private SearchTabContent(tabType: TabContentType, asset: ItAsset | Object): TabContent {
-    let assName: string = (asset instanceof ItAsset ? asset.GetName() : "");
+  private SearchTabContent(tabType: TabContentType, asset: PmtAsset | Object): TabContent {
+    let assName: string = (asset instanceof PmtAsset ? asset.GetName() : "");
     // search if asset is already open in a tab
     return this.tabs.find(elt => {
       return elt.type == tabType && (assName == "" || assName == elt.content.GetName())
@@ -392,4 +316,18 @@ export class GuiCtrlComponent implements GraphObjectFactory {
   GetSideNavLabel(): string {
     return (this.sidenavIsOpen?"Hide Sidenav":"Show Sidenav");
   }
+
+  //-------------------------
+  // PmtVersion management
+  //-------------------------
+  AddNewPmtVersion() {
+    this.AddPmtAssetTab('NEW_PMT_VERSION', PmtVersion);
+  }
+  //-------------------------
+  // PmtDomain management
+  //-------------------------
+  AddNewPmtDomain() {
+    this.AddPmtAssetTab('NEW_PMT_DOMAIN', PmtDomain);
+  }
+
 }

@@ -23,29 +23,16 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MainTabComponent } from './main-tab/main-tab.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { MiddleComponent } from './middle/middle.component';
 
-//import { DrawingFunctionListComponent } from './drawing-function-list/drawing-function-list.component';
-//import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
-
-import { ApplicationFormComponent } from './application-form/application-form.component';
-import { MetamodelFormComponent } from './metamodel-form/metamodel-form.component';
-import { MapFormComponent } from './map-form/map-form.component';
-import { MapFormDialogComponent } from './map-form/map-form-dialog.component';
 import { LoginFormComponent } from './login-form/login-form.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // <-- NgModel lives here
-
-
-import { ApplicationListComponent } from './application-list/application-list.component';
-import { MetamodelListComponent } from './metamodel-list/metamodel-list.component';
-
 import { DataService } from './core/services/data.service';
-import { AppDataService } from './core/services/app.data.service';
 
 import { GuiCtrlComponent} from './gui-ctrl-component';
 // routing
@@ -55,6 +42,8 @@ import { GuiCtrlComponent} from './gui-ctrl-component';
 import { HttpClientModule }    from '@angular/common/http';
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { EscapeHtmlPipe, EnumToArrayPipe } from './core/util';
+import { PmtversionComponent } from './pmtversion/pmtversion.component';
+import { PmtdomainComponent } from './pmtdomain/pmtdomain.component';
 
 
 @NgModule({
@@ -65,18 +54,11 @@ import { EscapeHtmlPipe, EnumToArrayPipe } from './core/util';
     HeaderComponent,
     FooterComponent,
     MiddleComponent,
-    ApplicationFormComponent,
-    ApplicationListComponent,
     LoginFormComponent,
     NotFoundComponent,
-    EscapeHtmlPipe, EnumToArrayPipe,
-    MetamodelFormComponent,
-    MetamodelListComponent,
-    MapFormComponent,
-    MapFormDialogComponent
+    EscapeHtmlPipe, EnumToArrayPipe, PmtversionComponent, PmtdomainComponent
   ],
-  imports: [
-    
+  imports: [    
     BrowserModule,
     CommonModule,
     BrowserAnimationsModule,
@@ -100,10 +82,10 @@ import { EscapeHtmlPipe, EnumToArrayPipe } from './core/util';
     HttpClientModule,
     MatAutocompleteModule,
     MatProgressBarModule,
+    MatSlideToggleModule,
     ReactiveFormsModule
   ],
-  providers: [AppDataService, DataService, {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}],
-  bootstrap: [AppComponent],
-  entryComponents: [MapFormDialogComponent]
+  providers: [DataService, {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

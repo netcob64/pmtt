@@ -1,0 +1,33 @@
+<div class="appForm">
+  <h2>Domain: {{ object.GetName() | uppercase }}<span class="info" *ngIf="CheckToBeSaved()"> (not saved)</span></h2>
+  <table class="formTab">
+   
+    <tr>
+      <td>
+        <mat-form-field>
+          <!--<input matInput [(ngModel)]="application.name" placeholder="Name" (change)="FireChange('name',$event)">-->
+          <input matInput [(ngModel)]="object.name" placeholder="Name">
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field>
+          <!--<input matInput [(ngModel)]="application.name" placeholder="Name" (change)="FireChange('name',$event)">-->
+          <textarea matInput cdkTextareaAutosize [(ngModel)]="object.description" placeholder="Description"></textarea>
+        </mat-form-field>
+      </td>
+    </tr>
+   
+     <tr>
+      <td class="forDebug">ID: #{{object.GetId()}}</td>
+      <td class="forDebug">Version: {{object.GetVersion()}}</td>
+    </tr>
+  </table>
+  <mat-error *ngIf="error">
+    {{errorMessage}}
+  </mat-error>
+  <div class="cmdButtons">
+    <button mat-raised-button [disabled]="!CheckToBeSaved()" (click)="Save();">Save</button>
+    <button mat-raised-button [disabled]="false" (click)="Delete();">Delete</button>
+    <button *ngIf="error" mat-raised-button color="warn" (click)="Reload();">Reload</button>
+  </div>
+</div>

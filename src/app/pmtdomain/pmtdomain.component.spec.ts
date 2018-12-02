@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MetamodelFormComponent } from './metamodel-form.component';
+import { PmtdomainComponent } from './pmtdomain.component';
 
-describe('MetamodelFormComponent', () => {
-  let component: MetamodelFormComponent;
-  let fixture: ComponentFixture<MetamodelFormComponent>;
+describe('PmtdomainComponent', () => {
+  let component: PmtdomainComponent;
+  let fixture: ComponentFixture<PmtdomainComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MetamodelFormComponent ]
+      declarations: [ PmtdomainComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MetamodelFormComponent);
+    fixture = TestBed.createComponent(PmtdomainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
